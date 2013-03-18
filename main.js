@@ -1,3 +1,5 @@
+// TODO: dojo2-core should be used everywhere (dojo-ts)
+
 define([
 	'require',
 	'dojo-ts/Deferred',
@@ -21,12 +23,14 @@ define([
 		 */
 		runSandboxed: function (paths) {
 			// TODO: is this the best way to handle this?
-			// Should we just go off of a fresh Sandbox instantiation every time?
+			// Should we just go off of a fresh Sandbox instance every time?
 			var sandbox = new Sandbox();
 			
 			// In theory, this should call the _setPathAttr function of the widget,
 			// and do whatever functionality they need, regardless of environment
 			arrayUtil.forEach(paths, function (path) {
+				// This functionality may need to happen in some sort of deferred
+				// or queuing system.  It may cause the context to change too quickly.
 				sandbox.set('path', path);
 			});
 		},
