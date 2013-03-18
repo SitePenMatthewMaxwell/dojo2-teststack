@@ -37,7 +37,7 @@ else {
 
 			// args.suites might be an array or it might be a scalar value but we always need deps to be a fresh array.
 			var deps = [].concat(args.suites);
-
+			
 			if (!args.reporters) {
 				if (config.reporters) {
 					args.reporters = config.reporters;
@@ -73,16 +73,22 @@ else {
 			});
 
 			deps = deps.concat(args.reporters);
-
-			// Client interface has only one environment, the current environment, and cannot run functional tests on
-			// itself
-			main.suites.push(new Suite({ name: 'main', sessionId: args.sessionId }));
-
-			require(deps, function () {
-				if (args.autoRun !== 'false') {
-					main.run();
-				}
-			});
+			if (!args.sandbox) {
+				// Client interface has only one environment, the current environment, and cannot run functional tests on
+				// itself
+				main.suites.push(new Suite({ name: 'main', sessionId: args.sessionId }));
+				
+				require(deps, function () {
+					if (args.autoRun !== 'false') {
+						main.run();
+					}
+				});
+			} else {
+				// We need to preserve the original suite paths that are found in the config file.
+				// According to the comment above, this may mess up functional tests, but
+				// we can cross that bridge when we come to it.
+				main.runSandboxed(args.suites);
+			}
 		});
 	});
 }

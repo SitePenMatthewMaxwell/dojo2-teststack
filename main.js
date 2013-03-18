@@ -2,8 +2,10 @@ define([
 	'require',
 	'dojo-ts/Deferred',
 	'dojo-ts/topic',
-	'./lib/util'
-], function (require, Deferred, topic, util) {
+	'./lib/util',
+	'dojo-ts/has!host-browser?./lib/BrowserSandbox:./lib/NodeSandbox',
+	'dojo/_base/array'
+], function (require, Deferred, topic, util, Sandbox, arrayUtil) {
 	return {
 		/**
 		 * Maximum number of suites to run concurrently. Currently used only by the server-side runner.
@@ -14,6 +16,20 @@ define([
 		 * Suites to run. Each suite defined here corresponds to a single environment.
 		 */
 		suites: [],
+		/**
+		 * Run all suites in a sandbox.  Currently, sandbox will be resused for every suite (after being reset)
+		 */
+		runSandboxed: function (paths) {
+			// TODO: is this the best way to handle this?
+			// Should we just go off of a fresh Sandbox instantiation every time?
+			var sandbox = new Sandbox();
+			
+			// In theory, this should call the _setPathAttr function of the widget,
+			// and do whatever functionality they need, regardless of environment
+			arrayUtil.forEach(paths, function (path) {
+				sandbox.set('path', path);
+			});
+		},
 
 		/**
 		 * Runs all environmental suites concurrently, with a concurrency limit.
@@ -24,7 +40,7 @@ define([
 				numSuitesCompleted = 0,
 				numSuitesToRun = this.suites.length;
 
-			this.suites.forEach(queue(function (suite) {
+			this.suites.forEach(queue(function (suite) {;
 				return suite.run().always(function () {
 					if (++numSuitesCompleted === numSuitesToRun) {
 						dfd.resolve();

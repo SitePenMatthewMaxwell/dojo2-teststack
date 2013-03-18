@@ -50,7 +50,7 @@ define({
 	},
 
 	// Non-functional test suite(s) to run in each browser
-	suites: [ 'dojo2-teststack/test/all' ],
+	suites: [ 'dojo2-teststack/test/lib/Suite' ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
 	functionalSuites: [ ],
