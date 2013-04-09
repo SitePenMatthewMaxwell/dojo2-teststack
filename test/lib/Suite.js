@@ -6,19 +6,6 @@ define([
 	'dojo-ts/Deferred',
 	'dojo-ts/topic'
 ], function (registerSuite, assert, Suite, Test, Deferred, topic) {
-	var newSuiteTopic = 0,
-		newTestTopic = 0,
-		expectedSuites = 23,
-		expectedTests = 41;
-
-	topic.subscribe('/suite/new', function () {
-		newSuiteTopic++;
-	});
-
-	topic.subscribe('/test/new', function () {
-		newTestTopic++;
-	});
-
 	function createLifecycle(options) {
 		options = options || {};
 
@@ -338,9 +325,26 @@ define([
 
 		'Suite#teardown -> promise rejects': createSuiteThrows('teardown', { async: true }),
 
-		'Suite#topic counts': function () {
-			assert.equal(newSuiteTopic, expectedSuites, 'All suites accounted for');
-			assert.equal(newTestTopic, expectedTests, 'All tests accounted for');
+		'Suite#topics': function () {
+			var dfd = this.async(250),
+				testTopic = false,
+				suiteTopic = false,
+				testHandle = topic.subscribe('/test/new', function () {
+					testTopic = true;
+					testHandle.remove();
+				}),
+				suiteHandle = topic.subscribe('/suite/new', function () {
+					suiteTopic = true;
+					suiteHandle.remove();
+				}),
+				suite = new Suite({ name: 'foo', parent: new Suite({ name: 'parent' }) });
+
+			suite.tests.push(new Test({ test: function () {}, parent: suite }));
+
+			suite.run().then(dfd.callback(function () {
+				assert.isTrue(true, '/suite/new topic fired');
+				assert.isTrue(testTopic, '/test/new topic fired.');
+			}));
 		}
 	});
 });

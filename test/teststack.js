@@ -46,11 +46,11 @@ define({
 	loader: {
 		// Packages that should be registered with the loader in each testing environment
 		packages: [ 'dojo2-teststack' ],
-		map: { 'dojo2-teststack': { 'dojo-ts': 'dojo2-teststack/dojo' } }
+		map: { 'dojo2-teststack': { 'dojo-ts': '../dojo' } }
 	},
 
 	// Non-functional test suite(s) to run in each browser
-	suites: [ 'dojo2-teststack/test/all' ],
+	suites: [ '../test/all' ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
 	functionalSuites: [ ],
