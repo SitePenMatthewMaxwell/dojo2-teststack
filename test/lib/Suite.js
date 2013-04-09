@@ -331,11 +331,9 @@ define([
 				suiteTopic = false,
 				testHandle = topic.subscribe('/test/new', function () {
 					testTopic = true;
-					testHandle.remove();
 				}),
 				suiteHandle = topic.subscribe('/suite/new', function () {
 					suiteTopic = true;
-					suiteHandle.remove();
 				}),
 				suite = new Suite({ name: 'Suite#topics', parent: new Suite({ name: 'parent' }) });
 
@@ -344,6 +342,8 @@ define([
 			suite.run().then(dfd.callback(function () {
 				assert.isTrue(true, '/suite/new topic fired');
 				assert.isTrue(testTopic, '/test/new topic fired.');
+				testHandle.remove();
+				suiteHandle.remove();
 			}));
 		}
 	});
