@@ -326,8 +326,7 @@ define([
 		'Suite#teardown -> promise rejects': createSuiteThrows('teardown', { async: true }),
 
 		'Suite#topics': function () {
-			var dfd = this.async(250),
-				testTopic = false,
+			var testTopic = false,
 				suiteTopic = false,
 				testHandle = topic.subscribe('/test/new', function () {
 					testTopic = true;
@@ -339,12 +338,10 @@ define([
 
 			suite.tests.push(new Test({ test: function () {}, parent: suite }));
 
-			suite.run().then(dfd.callback(function () {
-				assert.isTrue(true, '/suite/new topic fired');
-				assert.isTrue(testTopic, '/test/new topic fired.');
-				testHandle.remove();
-				suiteHandle.remove();
-			}));
+			assert.isTrue(suiteTopic, '/suite/new topic fired');
+			assert.isTrue(testTopic, '/test/new topic fired.');
+			testHandle.remove();
+			suiteHandle.remove();
 		}
 	});
 });
