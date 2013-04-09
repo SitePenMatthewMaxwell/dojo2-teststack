@@ -337,7 +337,7 @@ define([
 					suiteTopic = true;
 					suiteHandle.remove();
 				}),
-				suite = new Suite({ name: 'foo', parent: new Suite({ name: 'parent' }) });
+				suite = new Suite({ name: 'Suite#topics', parent: new Suite({ name: 'parent' }) });
 
 			suite.tests.push(new Test({ test: function () {}, parent: suite }));
 
