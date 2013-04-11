@@ -1,0 +1,16 @@
+.suite {
+	padding: 10px;
+	background-color: #fff;
+	list-style-position: inside;
+}
+
+.pass {
+	color: #3C510C;
+	background-color: #8BE778;
+}
+
+.fail {
+	background-color: #EE7070;
+	color: #710909;
+}
+

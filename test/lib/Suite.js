@@ -341,6 +341,9 @@ define([
 			finally {
 				handle.remove();
 			}
+		},
+		'Suite#fail': function () {
+			assert.isTrue(false, 'This test should fail');
 		}
 	});
 });
