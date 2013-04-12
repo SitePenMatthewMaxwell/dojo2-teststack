@@ -21,10 +21,8 @@ define([
 		/**
 		 * Run all suites in a sandbox.  Currently, sandbox will be resused for every suite (after being reset)
 		 */
-		runSandboxed: function (paths, config) {
-			var sandbox = new Sandbox({
-				config: config
-			});
+		runSandboxed: function (paths, suite) {
+			var sandbox = new Sandbox();
 			
 			// In theory, this should do whatever functionality they need, regardless of environment
 			paths.forEach(function (path) {
