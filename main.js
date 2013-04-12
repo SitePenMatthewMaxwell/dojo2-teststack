@@ -35,7 +35,7 @@ define([
 					if (suite) {
 						// It seems the loading is happening just a little too fast for everything to finish up.
 						sandbox.loadFromPath(suite).then(function () {
-							setTimeout(loadNextSuite, 10);
+							setTimeout(loadNextSuite, 100);
 						});
 					}
 				}

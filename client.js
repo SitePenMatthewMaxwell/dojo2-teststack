@@ -80,7 +80,11 @@ else {
 			if (!args.sandbox) {
 				// Client interface has only one environment, the current environment, and cannot run functional tests on
 				// itself
-				main.suites.push(new Suite({ name: 'main', sessionId: args.sessionId }));
+				if (args.isSandbox) {
+					main.suites.push(new Suite({ name: 'sandbox for ' + args.suite, sessionId: args.sessionId }));
+				} else {
+					main.suites.push(new Suite({name: 'main', sessionId: args.sessionId }));
+				}
 
 				var req, basePath, reqConfig, reqArgs;
 
