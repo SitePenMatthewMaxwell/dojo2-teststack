@@ -37,7 +37,7 @@ else {
 				}
 
 				// args.suites might be an array or it might be a scalar value but we always need deps to be a fresh array.
-				var deps = [].concat(args.suites);
+				var deps = args.sandbox ? [] : [].concat(args.suites);
 				
 				if (!args.reporters) {
 					if (config.reporters) {
@@ -88,7 +88,9 @@ else {
 					// We need to preserve the original suite paths that are found in the config file.
 					// According to the comment above, this may mess up functional tests, but
 					// we can cross that bridge when we come to it.
-					main.runSandboxed(args.suites);
+					require(deps, function () {
+						main.runSandboxed(args.suites);
+					});
 				}
 			});
 		} else {
