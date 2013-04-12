@@ -18,10 +18,11 @@ else {
 	define([
 		'./main',
 		'./lib/args',
+		'./lib/reporterManager',
 		'./lib/Suite',
 		'dojo-ts/topic',
 		'require'
-	], function (main, args, Suite, topic, require) {
+	], function (main, args, reporterManager, Suite, topic, require) {
 		if (!args.config && !args.suite) {
 			throw new Error('Missing "config" and "test" argument');
 		}
@@ -74,6 +75,15 @@ else {
 				});
 
 				deps = deps.concat(args.reporters);
+
+				// A hash map, { reporter module ID: reporter definition }
+				var reporters = [].slice.call(arguments, arguments.length - args.reporters.length).reduce(function (map, reporter, i) {
+					map[args.reporters[i]] = reporter;
+					return map;
+				}, {});
+				
+				reporterManager.add(reporters);
+
 				if (!args.sandbox) {
 					// Client interface has only one environment, the current environment, and cannot run functional tests on
 					// itself

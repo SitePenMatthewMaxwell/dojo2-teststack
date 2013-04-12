@@ -23,8 +23,7 @@ define({
 		{ browserName: 'internet explorer', version: '9', platform: 'Windows 2008' },
 		{ browserName: 'firefox', version: '19', platform: [ 'Linux', 'Mac 10.6', 'Windows 2012' ] },
 		{ browserName: 'chrome', platform: [ 'Linux', 'Mac 10.8', 'Windows 2008' ] },
-		{ browserName: 'safari', version: '6', platform: 'Mac 10.8' },
-		{ browserName: 'safari', version: '5', platform: 'Mac 10.6' }
+		{ browserName: 'safari', version: '6', platform: 'Mac 10.8' }
 	],
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service
@@ -56,5 +55,5 @@ define({
 	functionalSuites: [ ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^dojo2-teststack\/dojo\//
+	excludeInstrumentation: /^dojo2-teststack\/(?:test\/teststack\.js|dojo\/)/
 });
