@@ -21,15 +21,27 @@ define([
 		/**
 		 * Run all suites in a sandbox.  Currently, sandbox will be resused for every suite (after being reset)
 		 */
-		runSandboxed: function (paths) {
-			var sandbox = new Sandbox();
-			
-			// In theory, this should do whatever functionality they need, regardless of environment
-			paths.forEach(function (path) {
-				// This functionality may need to happen in some sort of deferred
-				// or queuing system.  It may cause the context to change too quickly.
-				sandbox.loadFromPath(path);
-			});
+		runSandboxed: function (paths, config) {
+			var sandbox = new Sandbox({
+				config: config
+			}),
+			queue = paths.slice(0);
+
+			function loadNextSuite() {
+				var suite;
+
+				if (queue.length) {
+					suite = queue.splice(0,1);
+					if (suite) {
+						// It seems the loading is happening just a little too fast for everything to finish up.
+						sandbox.loadFromPath(suite).then(function () {
+							setTimeout(loadNextSuite, 10);
+						});
+					}
+				}
+			}
+
+			loadNextSuite();
 		},
 
 		/**
@@ -41,7 +53,7 @@ define([
 				numSuitesCompleted = 0,
 				numSuitesToRun = this.suites.length;
 
-			this.suites.forEach(queue(function (suite) {;
+			this.suites.forEach(queue(function (suite) {
 				return suite.run().always(function () {
 					if (++numSuitesCompleted === numSuitesToRun) {
 						dfd.resolve();
