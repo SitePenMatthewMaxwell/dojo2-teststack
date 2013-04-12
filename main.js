@@ -6,8 +6,8 @@ define([
 	'dojo-ts/topic',
 	'./lib/util',
 	'dojo-ts/has!host-browser?./lib/BrowserSandbox:./lib/NodeSandbox',
-	'dojo/_base/array'
-], function (require, Deferred, topic, util, Sandbox, arrayUtil) {
+	'dojo-ts/on'
+], function (require, Deferred, topic, util, Sandbox, on) {
 	return {
 		/**
 		 * Maximum number of suites to run concurrently. Currently used only by the server-side runner.
@@ -21,13 +21,13 @@ define([
 		/**
 		 * Run all suites in a sandbox.  Currently, sandbox will be resused for every suite (after being reset)
 		 */
-		runSandboxed: function (paths) {
-			// TODO: is this the best way to handle this?
-			// Should we just go off of a fresh Sandbox instance every time?
-			var sandbox = new Sandbox();
+		runSandboxed: function (paths, config) {
+			var sandbox = new Sandbox({
+				config: config
+			});
 			
 			// In theory, this should do whatever functionality they need, regardless of environment
-			arrayUtil.forEach(paths, function (path) {
+			paths.forEach(function (path) {
 				// This functionality may need to happen in some sort of deferred
 				// or queuing system.  It may cause the context to change too quickly.
 				sandbox.loadFromPath(path);

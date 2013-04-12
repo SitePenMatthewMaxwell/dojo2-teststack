@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<body>
 		<script src="../dojo/dojo.js" data-dojo-config="async: true"></script>
-		<script src="reporters/iframe.js"></script>
-	</head>
-	<body></body>
+		<script>
+		var basePath = location.pathname.replace(/[^\/]+$/, '') + '../';
+		require({
+			baseUrl: basePath,
+			packages: [
+				{ name: 'dojo-ts', location: basePath + 'dojo' },
+				{ name: 'teststack', location: basePath },
+				{ name: 'chai', location: basePath + 'chai', main: 'chai' },
+				{ name: 'dojo2-teststack', location: basePath }
+			]
+		}, ["lib/reporters/iframe"]);
+		</script>
+	</body>
 </html>

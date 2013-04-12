@@ -87,7 +87,7 @@ else {
 				// We need to preserve the original suite paths that are found in the config file.
 				// According to the comment above, this may mess up functional tests, but
 				// we can cross that bridge when we come to it.
-				main.runSandboxed(args.suites);
+				main.runSandboxed(args.suites, args.config);
 			}
 		});
 	});
