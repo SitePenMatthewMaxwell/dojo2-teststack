@@ -12,7 +12,23 @@
 				{ name: 'chai', location: basePath + 'chai', main: 'chai' },
 				{ name: 'dojo2-teststack', location: basePath }
 			]
-		}, ['lib/reporters/iframe']);
+		}, ['dojo-ts/on', 'require', 'lib/reporters/iframe'], function (on, require, iframe) {
+			on(window, 'load', function () {
+				iframe.post('Sandbox initialized');
+			});
+
+			on(window, 'message', function (event) {
+				var data = JSON.parse(event.data);
+
+				if (data.type === 'loadTest') {
+					require(['teststack/client'], function () {
+						iframe.post('Client loaded');
+					});
+				} else {
+					iframe.post('Unknown type')
+				}
+			});
+		});
 		</script>
 	</body>
 </html>

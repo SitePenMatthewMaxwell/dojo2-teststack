@@ -24,7 +24,7 @@ else {
 		'require'
 	], function (main, args, reporterManager, Suite, topic, require) {
 		if (!args.config && !args.suite) {
-			throw new Error('Missing "config" and "test" argument');
+			throw new Error('Missing "config" and "suite" argument');
 		}
 
 		require([ args.config ], function (config) {
