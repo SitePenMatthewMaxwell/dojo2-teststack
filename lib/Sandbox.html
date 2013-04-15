@@ -14,7 +14,7 @@
 			]
 		}, ['dojo-ts/on', 'require', 'lib/reporters/iframe'], function (on, require, iframe) {
 			on(window, 'load', function () {
-				iframe.post('Sandbox initialized');
+				iframe.publish('/sandbox/loaded');
 			});
 
 			on(window, 'message', function (event) {
@@ -22,10 +22,10 @@
 
 				if (data.type === 'loadTest') {
 					require(['teststack/client'], function () {
-						iframe.post('Client loaded');
+						iframe.publish('/sandbox/clientLoaded');
 					});
 				} else {
-					iframe.post('Unknown type')
+					iframe.error('Unknown type', data.type, data);
 				}
 			});
 		});
